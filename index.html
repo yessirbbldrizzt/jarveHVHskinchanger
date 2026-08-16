@@ -102,14 +102,13 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 12px;
-      /* Removed padding so the image goes flush to the edges of the box */
     }
 
     .img-container img {
       width: 100%;
       height: 100%;
-      /* THE MAGIC CODE: This makes it scan, perfectly center, and fill the box */
-      object-fit: cover; 
+      /* CHANGED TO CONTAIN: This ensures the full image is shown and perfectly centered */
+      object-fit: contain; 
       object-position: center;
       transition: transform 0.3s ease;
     }
@@ -181,70 +180,70 @@
         id: "steve",
         name: "Steve",
         category: "Minecraft",
-        image: "https://www.exitlag.com/blog/wp-content/uploads/2024/12/steve-from-minecraft-2.webp", 
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/steve.png", 
         path: "agents\\models\\hmn_ag2\\minecraft\\steve\\steve.vmdl"
       },
       {
         id: "peely",
         name: "Peely",
         category: "Fortnite",
-        image: "https://wallpaperaccess.com/full/3839744.jpg", 
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/peely.png", 
         path: "agents\\models\\hmn_ag2\\fortnite\\peely\\peely.vmdl"
       },
       {
         id: "homelander",
         name: "Homelander",
         category: "The Boys",
-        image: "https://assets.altarofgaming.com/wp-content/uploads/2024/07/homelander-mortal-kombat-1-character-artwork-altar-of-gaming-1349-726x1024.png",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/homelander.png",
         path: "agents\\models\\hmn_ag2\\the_boys\\homelander\\homelander.vmdl"
       },
       {
         id: "yoshi",
         name: "Yoshi",
         category: "Mario Series",
-        image: "https://static.wikia.nocookie.net/vsbattles/images/1/1c/Yoshi_Ultimate.png/revision/latest/scale-to-width-down/260?cb=20180612233650",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/yoshi.png",
         path: "agents\\models\\hmn_ag2\\mario_series\\yoshi\\yoshi.vmdl"
       },
       {
         id: "async_hazmat",
         name: "Async Hazmat",
         category: "Backrooms",
-        image: "https://images.cults3d.com/DjD0LdzCSTZZIsWdz4IhiF5H7z4=/516x516/filters:no_upscale():format(webp)/https://fbi.cults3d.com/uploaders/30212331/illustration-file/1c97739b-75f0-4ea6-98ef-94ebff678124/br3.png",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/hazmat.png",
         path: "agents\\models\\hmn_ag2\\backrooms\\async_hazmat_suits\\async_hazmat_suits.vmdl"
       },
       {
         id: "simon",
         name: "Simon Henriksson",
         category: "Cry of Fear",
-        image: "https://static.wikia.nocookie.net/p__/images/b/b3/SimonHenriksson.png/revision/latest?cb=20231108143238&path-prefix=protagonist",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/simon.png",
         path: "agents\\models\\hmn_ag2\\cry_of_fear\\simon_henriksson\\simon_henriksson.vmdl"
       },
       {
         id: "springtrap",
         name: "Springtrap",
         category: "Zombies / FNAF",
-        image: "https://preview.redd.it/if-they-ever-make-a-fnaf-movie-3-what-will-they-do-with-v0-e3fld4gnc9zf1.png?auto=webp&s=021197677753e5b9b0d9540b94de187c0b1b3943",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/springtrap.png",
         path: "agents\\models\\hmn_ag2\\zombie\\springtrap\\springtrap.vmdl"
       },
       {
         id: "xenomorph",
         name: "Xenomorph",
         category: "Zombies / Alien",
-        image: "https://static.wikia.nocookie.net/aliens/images/d/d3/Xenomorph-design.jpg/revision/latest?cb=20200302150206",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/xenomorph.png",
         path: "agents\\models\\hmn_ag2\\zombie\\xenomorph\\xenomorph.vmdl"
       },
       {
         id: "witch_headcrab",
         name: "Witch Headcrab",
         category: "Zombies / L4D",
-        image: "https://images.steamusercontent.com/ugc/2486623401413535357/72DCBE5686E51C74591FA5E75E557E32219BFE0B/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/headcrab.png",
         path: "agents\\models\\hmn_ag2\\zombie\\witch_headcrab\\witch_headcrab.vmdl"
       },
       {
         id: "skeleton",
         name: "Skeleton",
         category: "Zombies",
-        image: "https://as2.ftcdn.net/v2/jpg/00/67/91/25/1000_F_67912559_EtGFNC9vHL3dLpwbEB4FQMbZ3k58uy9z.jpg",
+        image: "https://raw.githubusercontent.com/yessirbbldrizzt/jarveHVHskinchanger/main/skeleton.png",
         path: "agents\\models\\hmn_ag2\\zombie\\skeleton\\skeleton.vmdl"
       }
     ];
@@ -261,7 +260,7 @@
       card.innerHTML = `
         <input type="checkbox" value="${agent.id}" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
         <div class="img-container">
-          <img src="${agent.image}" referrerpolicy="no-referrer" alt="${agent.name}">
+          <img src="${agent.image}" referrerpolicy="no-referrer" alt="${agent.name}" onerror="this.src='https://placehold.co/200x160/1b1e28/7483a9?text=Image+Missing'">
         </div>
         <div class="info">
           <span class="category">${agent.category}</span>
