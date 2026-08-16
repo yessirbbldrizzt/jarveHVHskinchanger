@@ -4,31 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CS2 Custom Agent Selector</title>
-  <!-- Free CDNs for Zip Generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
     :root {
-      --primary: #ff4655;
-      --primary-hover: #e03746;
-      --bg: #090a0f;
-      --card-bg: #13151f;
-      --card-border: #232738;
-      --text: #ffffff;
-      --text-muted: #8b92a5;
+      /* Matching the icy blue / dark theme from your picture */
+      --primary: #8cb6ff; 
+      --primary-hover: #abc9ff;
+      --bg: #12141a;
+      --card-bg: #1b1e28;
+      --card-border: #2c3245;
+      --text: #e0e6f8;
+      --text-muted: #7483a9;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg);
       background-image: 
-        radial-gradient(at 0% 0%, rgba(255, 70, 85, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(140, 182, 255, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(100, 120, 200, 0.08) 0px, transparent 50%);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
@@ -38,27 +34,18 @@
       padding: 50px 20px 80px 20px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-      animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
+    header { text-align: center; margin-bottom: 40px; }
+    
     h1 {
       font-size: 2.4rem;
       font-weight: 800;
       color: var(--primary);
       letter-spacing: -0.5px;
       margin-bottom: 10px;
-      text-shadow: 0 0 24px rgba(255, 70, 85, 0.35);
+      text-shadow: 0 0 20px rgba(140, 182, 255, 0.2);
     }
 
-    p {
-      color: var(--text-muted);
-      font-size: 1rem;
-      max-width: 500px;
-      line-height: 1.5;
-    }
+    p { color: var(--text-muted); max-width: 500px; line-height: 1.5; }
 
     .grid {
       display: grid;
@@ -67,7 +54,6 @@
       width: 100%;
       max-width: 1100px;
       margin-bottom: 40px;
-      animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .card {
@@ -79,21 +65,20 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
       user-select: none;
-      overflow: hidden;
     }
 
     .card:hover {
       transform: translateY(-4px);
-      border-color: #3b4259;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      border-color: #4a5a80;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
     }
 
     .card.selected {
       border-color: var(--primary);
-      background: #1c1822;
-      box-shadow: 0 0 0 1px var(--primary), 0 10px 25px -5px rgba(255, 70, 85, 0.25);
+      background: #171d2b;
+      box-shadow: 0 0 0 1px var(--primary), 0 10px 25px -5px rgba(140, 182, 255, 0.15);
     }
 
     .card input[type="checkbox"] {
@@ -111,7 +96,7 @@
       width: 100%;
       height: 160px;
       border-radius: 10px;
-      background: #0d0f17;
+      background: #0d0f14;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -127,22 +112,11 @@
       transition: transform 0.3s ease;
     }
 
-    .card:hover .img-container img {
-      transform: scale(1.08);
-    }
+    .card:hover .img-container img { transform: scale(1.08); }
 
-    .info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .title {
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-    }
-
+    .info { display: flex; flex-direction: column; gap: 3px; }
+    .title { font-weight: 700; font-size: 1rem; color: #fff; }
+    
     .category {
       font-size: 0.75rem;
       font-weight: 600;
@@ -151,17 +125,12 @@
       color: var(--primary);
     }
 
-    .download-container {
-      position: sticky;
-      bottom: 24px;
-      z-index: 10;
-      animation: fadeIn 0.8s ease;
-    }
+    .download-container { position: sticky; bottom: 24px; z-index: 10; }
 
     button {
       background: var(--primary);
-      color: white;
-      font-weight: 700;
+      color: #0b0d14;
+      font-weight: 800;
       font-size: 1rem;
       border: none;
       padding: 16px 40px;
@@ -170,34 +139,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: 0 10px 30px rgba(255, 70, 85, 0.4);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px rgba(140, 182, 255, 0.25);
+      transition: all 0.2s ease;
     }
 
     button:hover {
       background: var(--primary-hover);
       transform: scale(1.03);
-      box-shadow: 0 12px 35px rgba(255, 70, 85, 0.55);
+      box-shadow: 0 12px 35px rgba(140, 182, 255, 0.4);
     }
 
-    button:active {
-      transform: scale(0.97);
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    button:active { transform: scale(0.97); }
   </style>
 </head>
 <body>
@@ -207,144 +159,8 @@
     <p>Select only the character models you want. Keeps match loading fast and avoids folder bloat.</p>
   </header>
 
-  <div class="grid" id="agentGrid">
-    <!-- Steve (Minecraft) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="steve" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png" 
-             srcset="https://images.cults3d.com/pZq1gR6Xo0h7wKjV6B-0H4l1b_0=/https://files.cults3d.com/uploaders/19532585/illustration-file/8e2fc111-f1ce-4277-bf35-f09b23b12bb2/steve.png" 
-             referrerpolicy="no-referrer" alt="Minecraft Steve" 
-             onerror="this.src='https://assets.stickpng.com/images/580b57fcd9996e24bc43c2f7.png'">
-      </div>
-      <div class="info">
-        <span class="category">Minecraft</span>
-        <span class="title">Steve</span>
-      </div>
-    </div>
-
-    <!-- Peely (Fortnite) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="peely" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://media.fortniteapi.io/images/cosmetics/cid_358_athena_commando_m_banana/icon.png" 
-             referrerpolicy="no-referrer" alt="Fortnite Peely">
-      </div>
-      <div class="info">
-        <span class="category">Fortnite</span>
-        <span class="title">Peely</span>
-      </div>
-    </div>
-
-    <!-- Homelander (The Boys) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="homelander" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://assets.stickpng.com/images/62d854e4277d337d12f1e67e.png" 
-             referrerpolicy="no-referrer" alt="Homelander" 
-             onerror="this.src='https://www.pngall.com/wp-content/uploads/13/Homelander-PNG-Image.png'">
-      </div>
-      <div class="info">
-        <span class="category">The Boys</span>
-        <span class="title">Homelander</span>
-      </div>
-    </div>
-
-    <!-- Yoshi (Mario) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="yoshi" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://mario.wiki.gallery/images/4/4d/Yoshi_-_Mario_Party_10.png" 
-             referrerpolicy="no-referrer" alt="Yoshi">
-      </div>
-      <div class="info">
-        <span class="category">Mario Series</span>
-        <span class="title">Yoshi</span>
-      </div>
-    </div>
-
-    <!-- Async Hazmat (Backrooms) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="async_hazmat" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://pngimg.com/uploads/hazmat_suit/hazmat_suit_PNG26.png" 
-             referrerpolicy="no-referrer" alt="Async Hazmat Suit" 
-             onerror="this.src='https://assets.stickpng.com/images/580b585b2edbce24c47b2695.png'">
-      </div>
-      <div class="info">
-        <span class="category">Backrooms</span>
-        <span class="title">Async Hazmat</span>
-      </div>
-    </div>
-
-    <!-- Simon Henriksson (Cry of Fear) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="simon" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://steamuserimages-a.akamaihd.net/ugc/863988636737525381/A4BCF5DA375A20C2822B7E1C55BC8ECA78508DF6/" 
-             referrerpolicy="no-referrer" alt="Simon Henriksson">
-      </div>
-      <div class="info">
-        <span class="category">Cry of Fear</span>
-        <span class="title">Simon Henriksson</span>
-      </div>
-    </div>
-
-    <!-- Springtrap (FNAF) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="springtrap" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://assets.stickpng.com/images/5856b3e34f6ae202fedf274a.png" 
-             referrerpolicy="no-referrer" alt="Springtrap" 
-             onerror="this.src='https://pngimg.com/uploads/fnaf/fnaf_PNG42.png'">
-      </div>
-      <div class="info">
-        <span class="category">Zombies / FNAF</span>
-        <span class="title">Springtrap</span>
-      </div>
-    </div>
-
-    <!-- Xenomorph (Alien) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="xenomorph" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://assets.stickpng.com/images/580b57fbd9996e24bc43beff.png" 
-             referrerpolicy="no-referrer" alt="Xenomorph Alien">
-      </div>
-      <div class="info">
-        <span class="category">Zombies / Alien</span>
-        <span class="title">Xenomorph</span>
-      </div>
-    </div>
-
-    <!-- Witch Headcrab (Half-Life / L4D) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="witch_headcrab" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://assets.stickpng.com/images/585698b64f6ae202fedf272c.png" 
-             referrerpolicy="no-referrer" alt="Witch Headcrab" 
-             onerror="this.src='https://pngimg.com/uploads/monster/monster_PNG24.png'">
-      </div>
-      <div class="info">
-        <span class="category">Zombies / L4D</span>
-        <span class="title">Witch Headcrab</span>
-      </div>
-    </div>
-
-    <!-- Skeleton (Minecraft / Zombies) -->
-    <div class="card" onclick="toggleCard(this)">
-      <input type="checkbox" value="skeleton" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
-      <div class="img-container">
-        <img src="https://assets.stickpng.com/images/580b57fcd9996e24bc43c2f9.png" 
-             referrerpolicy="no-referrer" alt="Skeleton" 
-             onerror="this.src='https://pngimg.com/uploads/skeleton/skeleton_PNG5558.png'">
-      </div>
-      <div class="info">
-        <span class="category">Zombies</span>
-        <span class="title">Skeleton</span>
-      </div>
-    </div>
-  </div>
+  <!-- The grid is automatically filled by the JavaScript below -->
+  <div class="grid" id="agentGrid"></div>
 
   <div class="download-container">
     <button onclick="downloadPack()">
@@ -354,6 +170,105 @@
   </div>
 
   <script>
+    // =========================================================================
+    // 🛠️ EDIT YOUR IMAGES AND PATHS HERE 🛠️
+    // Replace the "image" link with your raw GitHub image links.
+    // =========================================================================
+    const AGENTS_DATA = [
+      {
+        id: "steve",
+        name: "Steve",
+        category: "Minecraft",
+        image: "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png", 
+        path: "agents\\models\\hmn_ag2\\minecraft\\steve\\steve.vmdl"
+      },
+      {
+        id: "peely",
+        name: "Peely",
+        category: "Fortnite",
+        image: "https://fortnite-api.com/images/cosmetics/br/cid_358_athena_commando_m_banana/icon.png", 
+        path: "agents\\models\\hmn_ag2\\fortnite\\peely\\peely.vmdl"
+      },
+      {
+        id: "homelander",
+        name: "Homelander",
+        category: "The Boys",
+        image: "https://upload.wikimedia.org/wikipedia/commons/2/22/Anthony_Starr_by_Gage_Skidmore_2.jpg",
+        path: "agents\\models\\hmn_ag2\\the_boys\\homelander\\homelander.vmdl"
+      },
+      {
+        id: "yoshi",
+        name: "Yoshi",
+        category: "Mario Series",
+        image: "https://mario.wiki.gallery/images/4/4d/Yoshi_-_Mario_Party_10.png",
+        path: "agents\\models\\hmn_ag2\\mario_series\\yoshi\\yoshi.vmdl"
+      },
+      {
+        id: "async_hazmat",
+        name: "Async Hazmat",
+        category: "Backrooms",
+        image: "https://pngimg.com/uploads/hazmat_suit/hazmat_suit_PNG26.png",
+        path: "agents\\models\\hmn_ag2\\backrooms\\async_hazmat_suits\\async_hazmat_suits.vmdl"
+      },
+      {
+        id: "simon",
+        name: "Simon Henriksson",
+        category: "Cry of Fear",
+        image: "https://steamuserimages-a.akamaihd.net/ugc/863988636737525381/A4BCF5DA375A20C2822B7E1C55BC8ECA78508DF6/",
+        path: "agents\\models\\hmn_ag2\\cry_of_fear\\simon_henriksson\\simon_henriksson.vmdl"
+      },
+      {
+        id: "springtrap",
+        name: "Springtrap",
+        category: "Zombies / FNAF",
+        image: "https://pngimg.com/uploads/fnaf/fnaf_PNG42.png",
+        path: "agents\\models\\hmn_ag2\\zombie\\springtrap\\springtrap.vmdl"
+      },
+      {
+        id: "xenomorph",
+        name: "Xenomorph",
+        category: "Zombies / Alien",
+        image: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Xenomorph_%28Alien_costume%29.jpg",
+        path: "agents\\models\\hmn_ag2\\zombie\\xenomorph\\xenomorph.vmdl"
+      },
+      {
+        id: "witch_headcrab",
+        name: "Witch Headcrab",
+        category: "Zombies / L4D",
+        image: "https://pngimg.com/uploads/monster/monster_PNG24.png",
+        path: "agents\\models\\hmn_ag2\\zombie\\witch_headcrab\\witch_headcrab.vmdl"
+      },
+      {
+        id: "skeleton",
+        name: "Skeleton",
+        category: "Zombies",
+        image: "https://pngimg.com/uploads/skeleton/skeleton_PNG5558.png",
+        path: "agents\\models\\hmn_ag2\\zombie\\skeleton\\skeleton.vmdl"
+      }
+    ];
+    // =========================================================================
+
+    // Automatically generates the HTML cards based on the data above
+    const grid = document.getElementById("agentGrid");
+
+    AGENTS_DATA.forEach(agent => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.onclick = () => toggleCard(card);
+      
+      card.innerHTML = `
+        <input type="checkbox" value="${agent.id}" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+        <div class="img-container">
+          <img src="${agent.image}" referrerpolicy="no-referrer" alt="${agent.name}">
+        </div>
+        <div class="info">
+          <span class="category">${agent.category}</span>
+          <span class="title">${agent.name}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
     function toggleCard(cardElement) {
       const checkbox = cardElement.querySelector('.agent-check');
       checkbox.checked = !checkbox.checked;
@@ -377,23 +292,10 @@
       let configText = "=== MEMESENSE CUSTOM AGENT PATHS ===\n";
       configText += "Copy and paste these exact paths into the Customizations box in MemeSense:\n\n";
 
-      const paths = {
-        "async_hazmat": "agents\\models\\hmn_ag2\\backrooms\\async_hazmat_suits\\async_hazmat_suits.vmdl",
-        "simon": "agents\\models\\hmn_ag2\\cry_of_fear\\simon_henriksson\\simon_henriksson.vmdl",
-        "peely": "agents\\models\\hmn_ag2\\fortnite\\peely\\peely.vmdl",
-        "yoshi": "agents\\models\\hmn_ag2\\mario_series\\yoshi\\yoshi.vmdl",
-        "steve": "agents\\models\\hmn_ag2\\minecraft\\steve\\steve.vmdl",
-        "homelander": "agents\\models\\hmn_ag2\\the_boys\\homelander\\homelander.vmdl",
-        "skeleton": "agents\\models\\hmn_ag2\\zombie\\skeleton\\skeleton.vmdl",
-        "springtrap": "agents\\models\\hmn_ag2\\zombie\\springtrap\\springtrap.vmdl",
-        "witch_headcrab": "agents\\models\\hmn_ag2\\zombie\\witch_headcrab\\witch_headcrab.vmdl",
-        "xenomorph": "agents\\models\\hmn_ag2\\zombie\\xenomorph\\xenomorph.vmdl"
-      };
-
       selected.forEach(box => {
-        const key = box.value;
-        if (paths[key]) {
-          configText += paths[key] + "\n";
+        const agent = AGENTS_DATA.find(a => a.id === box.value);
+        if (agent) {
+          configText += agent.path + "\n";
         }
       });
 
