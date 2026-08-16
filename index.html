@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS2 Agent Downloader</title>
+  <!-- Free CDNs for Zip Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    body {
+      background-color: #0e0e10;
+      color: #efeff1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    h1 { color: #ff4655; margin-bottom: 8px; }
+    p { color: #adadb8; margin-bottom: 24px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: #18181b;
+      border: 1px solid #2f2f35;
+      padding: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: 0.2s ease;
+    }
+    .card:hover { border-color: #ff4655; }
+    .card input { transform: scale(1.3); cursor: pointer; }
+    button {
+      background: #ff4655;
+      color: white;
+      font-weight: 700;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s ease;
+    }
+    button:hover { background: #e03746; }
+  </style>
+</head>
+<body>
+
+  <h1>CS2 Custom Agent Selector</h1>
+  <p>Select the characters you want to avoid in-game lag and bloated directories.</p>
+
+  <div class="grid">
+    <label class="card">
+      <input type="checkbox" value="steve" class="agent-check">
+      <span>Steve (Minecraft)</span>
+    </label>
+
+    <label class="card">
+      <input type="checkbox" value="peely" class="agent-check">
+      <span>Peely (Fortnite)</span>
+    </label>
+
+    <label class="card">
+      <input type="checkbox" value="homelander" class="agent-check">
+      <span>Homelander (The Boys)</span>
+    </label>
+
+    <label class="card">
+      <input type="checkbox" value="yoshi" class="agent-check">
+      <span>Yoshi (Mario)</span>
+    </label>
+
+    <label class="card">
+      <input type="checkbox" value="async_hazmat" class="agent-check">
+      <span>Async Hazmat (Backrooms)</span>
+    </label>
+  </div>
+
+  <button onclick="downloadPack()">Download Custom Pack (.zip)</button>
+
+  <script>
+    function downloadPack() {
+      const zip = new JSZip();
+      const selected = document.querySelectorAll('.agent-check:checked');
+
+      if (selected.length === 0) {
+        alert("Please select at least one agent!");
+        return;
+      }
+
+      let configText = "=== MEMESENSE CUSTOM AGENT PATHS ===\n";
+      configText += "Paste these paths into the Customizations box in MemeSense:\n\n";
+
+      const paths = {
+        "steve": "agents\\models\\hmn_ag2\\minecraft\\steve\\steve.vmdl",
+        "peely": "agents\\models\\hmn_ag2\\fortnite\\peely\\peely.vmdl",
+        "homelander": "agents\\models\\hmn_ag2\\the_boys\\homelander\\homelander.vmdl",
+        "yoshi": "agents\\models\\hmn_ag2\\mario_series\\yoshi\\yoshi.vmdl",
+        "async_hazmat": "agents\\models\\hmn_ag2\\backrooms\\async_hazmat_suits\\async_hazmat_suits.vmdl"
+      };
+
+      selected.forEach(box => {
+        const key = box.value;
+        if (paths[key]) {
+          configText += paths[key] + "\n";
+        }
+      });
+
+      // Creates the instructions inside the zip
+      zip.file("MEMESENSE_CUSTOM_PATHS.txt", configText);
+
+      // Trigger download
+      zip.generateAsync({ type: "blob" }).then(function(content) {
+        saveAs(content, "CS2_Custom_Agent_Pack.zip");
+      });
+    }
+  </script>
+</body>
+</html>
