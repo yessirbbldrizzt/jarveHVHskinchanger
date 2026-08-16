@@ -111,25 +111,26 @@
 
     .img-container {
       width: 100%;
-      height: 150px;
+      height: 160px;
       border-radius: 10px;
-      background: #0b0c12;
+      background: #0d0f17;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 12px;
+      padding: 6px;
     }
 
     .img-container img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       transition: transform 0.3s ease;
     }
 
     .card:hover .img-container img {
-      transform: scale(1.06);
+      transform: scale(1.08);
     }
 
     .info {
@@ -214,7 +215,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="steve" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=400&auto=format&fit=crop&q=60" alt="Minecraft Steve">
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/f/f6/Steve_JE4.png" alt="Minecraft Steve" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Minecraft</span>
@@ -226,7 +227,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="peely" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=400&auto=format&fit=crop&q=60" alt="Peely Banana">
+        <img src="https://fortnite-api.com/images/cosmetics/br/cid_358_athena_commando_m_banana/icon.png" alt="Fortnite Peely" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Fortnite</span>
@@ -238,7 +239,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="homelander" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=60" alt="Homelander Cape">
+        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=60" alt="Homelander" loading="lazy">
       </div>
       <div class="info">
         <span class="category">The Boys</span>
@@ -250,10 +251,10 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="yoshi" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1612287232230-e37604f32dc2?w=400&auto=format&fit=crop&q=60" alt="Yoshi Dinosaur">
+        <img src="https://mario.wiki.gallery/images/4/4d/Yoshi_-_Mario_Party_10.png" alt="Yoshi" loading="lazy">
       </div>
       <div class="info">
-        <span class="category">Mario</span>
+        <span class="category">Mario Series</span>
         <span class="title">Yoshi</span>
       </div>
     </div>
@@ -262,7 +263,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="async_hazmat" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=400&auto=format&fit=crop&q=60" alt="Hazmat Suit">
+        <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=400&auto=format&fit=crop&q=60" alt="Hazmat Suit" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Backrooms</span>
@@ -274,11 +275,11 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="simon" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&auto=format&fit=crop&q=60" alt="Simon Henriksson">
+        <img src="https://static.wikia.nocookie.net/cry-of-fear/images/b/b3/Simon_Henriksson_Render.png" alt="Simon Henriksson" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Cry of Fear</span>
-        <span class="title">Simon</span>
+        <span class="title">Simon Henriksson</span>
       </div>
     </div>
 
@@ -286,7 +287,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="springtrap" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=60" alt="Springtrap Robot">
+        <img src="https://static.wikia.nocookie.net/triple-a-fazbear/images/b/be/Springtrap_Render.png" alt="Springtrap" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Zombies / FNAF</span>
@@ -298,7 +299,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="xenomorph" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=400&auto=format&fit=crop&q=60" alt="Alien Xenomorph">
+        <img src="https://static.wikia.nocookie.net/avp/images/2/29/Alien_Warrior_Render.png" alt="Xenomorph Alien" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Zombies / Alien</span>
@@ -310,7 +311,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="witch_headcrab" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=400&auto=format&fit=crop&q=60" alt="Monster Headcrab">
+        <img src="https://static.wikia.nocookie.net/half-life/images/6/6c/Headcrab_classic.png" alt="Witch Headcrab" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Zombies / L4D</span>
@@ -322,7 +323,7 @@
     <div class="card" onclick="toggleCard(this)">
       <input type="checkbox" value="skeleton" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
       <div class="img-container">
-        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&auto=format&fit=crop&q=60" alt="Skeleton">
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/23/Skeleton_JE5_BE4.png" alt="Skeleton" loading="lazy">
       </div>
       <div class="info">
         <span class="category">Zombies</span>
@@ -339,14 +340,12 @@
   </div>
 
   <script>
-    // Handles clicking anywhere on the card to toggle
     function toggleCard(cardElement) {
       const checkbox = cardElement.querySelector('.agent-check');
       checkbox.checked = !checkbox.checked;
       cardElement.classList.toggle('selected', checkbox.checked);
     }
 
-    // Handles direct checkbox click
     function updateCard(checkboxElement) {
       const card = checkboxElement.closest('.card');
       card.classList.toggle('selected', checkboxElement.checked);
@@ -384,10 +383,8 @@
         }
       });
 
-      // Writes instructions and path list in the downloaded zip
       zip.file("MEMESENSE_CUSTOM_PATHS.txt", configText);
 
-      // Trigger browser download
       zip.generateAsync({ type: "blob" }).then(function(content) {
         saveAs(content, "CS2_Custom_Agent_Pack.zip");
       });
