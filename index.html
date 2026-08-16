@@ -3,92 +3,355 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS2 Agent Downloader</title>
+  <title>CS2 Custom Agent Selector</title>
   <!-- Free CDNs for Zip Generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
+    :root {
+      --primary: #ff4655;
+      --primary-hover: #e03746;
+      --bg: #090a0f;
+      --card-bg: #13151f;
+      --card-border: #232738;
+      --text: #ffffff;
+      --text-muted: #8b92a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background-color: #0e0e10;
-      color: #efeff1;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(255, 70, 85, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
+      color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px;
+      padding: 50px 20px 80px 20px;
     }
-    h1 { color: #ff4655; margin-bottom: 8px; }
-    p { color: #adadb8; margin-bottom: 24px; }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 24px rgba(255, 70, 85, 0.35);
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 500px;
+      line-height: 1.5;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
       width: 100%;
-      max-width: 800px;
-      margin-bottom: 30px;
+      max-width: 1100px;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    /* Model Card Styling */
     .card {
-      background: #18181b;
-      border: 1px solid #2f2f35;
-      padding: 16px;
-      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #3b4259;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Active / Checked Card State */
+    .card.selected {
+      border-color: var(--primary);
+      background: #1c1822;
+      box-shadow: 0 0 0 1px var(--primary), 0 10px 25px -5px rgba(255, 70, 85, 0.25);
+    }
+
+    .card input[type="checkbox"] {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 20px;
+      height: 20px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .img-container {
+      width: 100%;
+      height: 150px;
+      border-radius: 10px;
+      background: #0b0c12;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .img-container img {
+      transform: scale(1.06);
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .category {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+    }
+
+    /* Floating Download Bar */
+    .download-container {
+      position: sticky;
+      bottom: 24px;
+      z-index: 10;
+      animation: fadeIn 0.8s ease;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 50px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: 0.2s ease;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(255, 70, 85, 0.4);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .card:hover { border-color: #ff4655; }
-    .card input { transform: scale(1.3); cursor: pointer; }
-    button {
-      background: #ff4655;
-      color: white;
-      font-weight: 700;
-      border: none;
-      padding: 14px 32px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.2s ease;
+
+    button:hover {
+      background: var(--primary-hover);
+      transform: scale(1.03);
+      box-shadow: 0 12px 35px rgba(255, 70, 85, 0.55);
     }
-    button:hover { background: #e03746; }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
 
-  <h1>CS2 Custom Agent Selector</h1>
-  <p>Select the characters you want to avoid in-game lag and bloated directories.</p>
+  <header>
+    <h1>CS2 Custom Agent Selector</h1>
+    <p>Select only the character models you want. Keeps match loading fast and avoids folder bloat.</p>
+  </header>
 
-  <div class="grid">
-    <label class="card">
-      <input type="checkbox" value="steve" class="agent-check">
-      <span>Steve (Minecraft)</span>
-    </label>
+  <div class="grid" id="agentGrid">
+    <!-- Card: Steve -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="steve" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1627856013091-fed6e4e30025?w=400&auto=format&fit=crop&q=60" alt="Minecraft Steve">
+      </div>
+      <div class="info">
+        <span class="category">Minecraft</span>
+        <span class="title">Steve</span>
+      </div>
+    </div>
 
-    <label class="card">
-      <input type="checkbox" value="peely" class="agent-check">
-      <span>Peely (Fortnite)</span>
-    </label>
+    <!-- Card: Peely -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="peely" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=400&auto=format&fit=crop&q=60" alt="Peely Banana">
+      </div>
+      <div class="info">
+        <span class="category">Fortnite</span>
+        <span class="title">Peely</span>
+      </div>
+    </div>
 
-    <label class="card">
-      <input type="checkbox" value="homelander" class="agent-check">
-      <span>Homelander (The Boys)</span>
-    </label>
+    <!-- Card: Homelander -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="homelander" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=60" alt="Homelander Cape">
+      </div>
+      <div class="info">
+        <span class="category">The Boys</span>
+        <span class="title">Homelander</span>
+      </div>
+    </div>
 
-    <label class="card">
-      <input type="checkbox" value="yoshi" class="agent-check">
-      <span>Yoshi (Mario)</span>
-    </label>
+    <!-- Card: Yoshi -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="yoshi" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1612287232230-e37604f32dc2?w=400&auto=format&fit=crop&q=60" alt="Yoshi Dinosaur">
+      </div>
+      <div class="info">
+        <span class="category">Mario</span>
+        <span class="title">Yoshi</span>
+      </div>
+    </div>
 
-    <label class="card">
-      <input type="checkbox" value="async_hazmat" class="agent-check">
-      <span>Async Hazmat (Backrooms)</span>
-    </label>
+    <!-- Card: Async Hazmat -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="async_hazmat" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?w=400&auto=format&fit=crop&q=60" alt="Hazmat Suit">
+      </div>
+      <div class="info">
+        <span class="category">Backrooms</span>
+        <span class="title">Async Hazmat</span>
+      </div>
+    </div>
+
+    <!-- Card: Simon Henriksson -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="simon" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&auto=format&fit=crop&q=60" alt="Simon Henriksson">
+      </div>
+      <div class="info">
+        <span class="category">Cry of Fear</span>
+        <span class="title">Simon</span>
+      </div>
+    </div>
+
+    <!-- Card: Springtrap -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="springtrap" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=60" alt="Springtrap Robot">
+      </div>
+      <div class="info">
+        <span class="category">Zombies / FNAF</span>
+        <span class="title">Springtrap</span>
+      </div>
+    </div>
+
+    <!-- Card: Xenomorph -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="xenomorph" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=400&auto=format&fit=crop&q=60" alt="Alien Xenomorph">
+      </div>
+      <div class="info">
+        <span class="category">Zombies / Alien</span>
+        <span class="title">Xenomorph</span>
+      </div>
+    </div>
+
+    <!-- Card: Witch Headcrab -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="witch_headcrab" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=400&auto=format&fit=crop&q=60" alt="Monster Headcrab">
+      </div>
+      <div class="info">
+        <span class="category">Zombies / L4D</span>
+        <span class="title">Witch Headcrab</span>
+      </div>
+    </div>
+
+    <!-- Card: Skeleton -->
+    <div class="card" onclick="toggleCard(this)">
+      <input type="checkbox" value="skeleton" class="agent-check" onclick="event.stopPropagation(); updateCard(this);">
+      <div class="img-container">
+        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&auto=format&fit=crop&q=60" alt="Skeleton">
+      </div>
+      <div class="info">
+        <span class="category">Zombies</span>
+        <span class="title">Skeleton</span>
+      </div>
+    </div>
   </div>
 
-  <button onclick="downloadPack()">Download Custom Pack (.zip)</button>
+  <div class="download-container">
+    <button onclick="downloadPack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      Download Custom Pack (.zip)
+    </button>
+  </div>
 
   <script>
+    // Handles clicking anywhere on the card to toggle
+    function toggleCard(cardElement) {
+      const checkbox = cardElement.querySelector('.agent-check');
+      checkbox.checked = !checkbox.checked;
+      cardElement.classList.toggle('selected', checkbox.checked);
+    }
+
+    // Handles direct checkbox click
+    function updateCard(checkboxElement) {
+      const card = checkboxElement.closest('.card');
+      card.classList.toggle('selected', checkboxElement.checked);
+    }
+
     function downloadPack() {
       const zip = new JSZip();
       const selected = document.querySelectorAll('.agent-check:checked');
@@ -99,14 +362,19 @@
       }
 
       let configText = "=== MEMESENSE CUSTOM AGENT PATHS ===\n";
-      configText += "Paste these paths into the Customizations box in MemeSense:\n\n";
+      configText += "Copy and paste these exact paths into the Customizations box in MemeSense:\n\n";
 
       const paths = {
-        "steve": "agents\\models\\hmn_ag2\\minecraft\\steve\\steve.vmdl",
+        "async_hazmat": "agents\\models\\hmn_ag2\\backrooms\\async_hazmat_suits\\async_hazmat_suits.vmdl",
+        "simon": "agents\\models\\hmn_ag2\\cry_of_fear\\simon_henriksson\\simon_henriksson.vmdl",
         "peely": "agents\\models\\hmn_ag2\\fortnite\\peely\\peely.vmdl",
-        "homelander": "agents\\models\\hmn_ag2\\the_boys\\homelander\\homelander.vmdl",
         "yoshi": "agents\\models\\hmn_ag2\\mario_series\\yoshi\\yoshi.vmdl",
-        "async_hazmat": "agents\\models\\hmn_ag2\\backrooms\\async_hazmat_suits\\async_hazmat_suits.vmdl"
+        "steve": "agents\\models\\hmn_ag2\\minecraft\\steve\\steve.vmdl",
+        "homelander": "agents\\models\\hmn_ag2\\the_boys\\homelander\\homelander.vmdl",
+        "skeleton": "agents\\models\\hmn_ag2\\zombie\\skeleton\\skeleton.vmdl",
+        "springtrap": "agents\\models\\hmn_ag2\\zombie\\springtrap\\springtrap.vmdl",
+        "witch_headcrab": "agents\\models\\hmn_ag2\\zombie\\witch_headcrab\\witch_headcrab.vmdl",
+        "xenomorph": "agents\\models\\hmn_ag2\\zombie\\xenomorph\\xenomorph.vmdl"
       };
 
       selected.forEach(box => {
@@ -116,10 +384,10 @@
         }
       });
 
-      // Creates the instructions inside the zip
+      // Writes instructions and path list in the downloaded zip
       zip.file("MEMESENSE_CUSTOM_PATHS.txt", configText);
 
-      // Trigger download
+      // Trigger browser download
       zip.generateAsync({ type: "blob" }).then(function(content) {
         saveAs(content, "CS2_Custom_Agent_Pack.zip");
       });
