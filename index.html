@@ -8,7 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
     :root {
-      /* Matching the icy blue / dark theme from your picture */
+      /* Icy blue / dark theme */
       --primary: #8cb6ff; 
       --primary-hover: #abc9ff;
       --bg: #12141a;
@@ -102,19 +102,21 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 12px;
-      padding: 8px;
+      /* Removed padding so the image goes flush to the edges of the box */
     }
 
     .img-container img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      /* THE MAGIC CODE: This makes it scan, perfectly center, and fill the box */
+      object-fit: cover; 
+      object-position: center;
       transition: transform 0.3s ease;
     }
 
     .card:hover .img-container img { transform: scale(1.08); }
 
-    .info { display: flex; flex-direction: column; gap: 3px; }
+    .info { display: flex; flex-direction: column; gap: 3px; padding-top: 4px; }
     .title { font-weight: 700; font-size: 1rem; color: #fff; }
     
     .category {
@@ -179,70 +181,70 @@
         id: "steve",
         name: "Steve",
         category: "Minecraft",
-        image: "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png", 
+        image: "https://www.exitlag.com/blog/wp-content/uploads/2024/12/steve-from-minecraft-2.webp", 
         path: "agents\\models\\hmn_ag2\\minecraft\\steve\\steve.vmdl"
       },
       {
         id: "peely",
         name: "Peely",
         category: "Fortnite",
-        image: "https://fortnite-api.com/images/cosmetics/br/cid_358_athena_commando_m_banana/icon.png", 
+        image: "https://wallpaperaccess.com/full/3839744.jpg", 
         path: "agents\\models\\hmn_ag2\\fortnite\\peely\\peely.vmdl"
       },
       {
         id: "homelander",
         name: "Homelander",
         category: "The Boys",
-        image: "https://upload.wikimedia.org/wikipedia/commons/2/22/Anthony_Starr_by_Gage_Skidmore_2.jpg",
+        image: "https://assets.altarofgaming.com/wp-content/uploads/2024/07/homelander-mortal-kombat-1-character-artwork-altar-of-gaming-1349-726x1024.png",
         path: "agents\\models\\hmn_ag2\\the_boys\\homelander\\homelander.vmdl"
       },
       {
         id: "yoshi",
         name: "Yoshi",
         category: "Mario Series",
-        image: "https://mario.wiki.gallery/images/4/4d/Yoshi_-_Mario_Party_10.png",
+        image: "https://static.wikia.nocookie.net/vsbattles/images/1/1c/Yoshi_Ultimate.png/revision/latest/scale-to-width-down/260?cb=20180612233650",
         path: "agents\\models\\hmn_ag2\\mario_series\\yoshi\\yoshi.vmdl"
       },
       {
         id: "async_hazmat",
         name: "Async Hazmat",
         category: "Backrooms",
-        image: "https://pngimg.com/uploads/hazmat_suit/hazmat_suit_PNG26.png",
+        image: "https://images.cults3d.com/DjD0LdzCSTZZIsWdz4IhiF5H7z4=/516x516/filters:no_upscale():format(webp)/https://fbi.cults3d.com/uploaders/30212331/illustration-file/1c97739b-75f0-4ea6-98ef-94ebff678124/br3.png",
         path: "agents\\models\\hmn_ag2\\backrooms\\async_hazmat_suits\\async_hazmat_suits.vmdl"
       },
       {
         id: "simon",
         name: "Simon Henriksson",
         category: "Cry of Fear",
-        image: "https://steamuserimages-a.akamaihd.net/ugc/863988636737525381/A4BCF5DA375A20C2822B7E1C55BC8ECA78508DF6/",
+        image: "https://static.wikia.nocookie.net/p__/images/b/b3/SimonHenriksson.png/revision/latest?cb=20231108143238&path-prefix=protagonist",
         path: "agents\\models\\hmn_ag2\\cry_of_fear\\simon_henriksson\\simon_henriksson.vmdl"
       },
       {
         id: "springtrap",
         name: "Springtrap",
         category: "Zombies / FNAF",
-        image: "https://pngimg.com/uploads/fnaf/fnaf_PNG42.png",
+        image: "https://preview.redd.it/if-they-ever-make-a-fnaf-movie-3-what-will-they-do-with-v0-e3fld4gnc9zf1.png?auto=webp&s=021197677753e5b9b0d9540b94de187c0b1b3943",
         path: "agents\\models\\hmn_ag2\\zombie\\springtrap\\springtrap.vmdl"
       },
       {
         id: "xenomorph",
         name: "Xenomorph",
         category: "Zombies / Alien",
-        image: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Xenomorph_%28Alien_costume%29.jpg",
+        image: "https://static.wikia.nocookie.net/aliens/images/d/d3/Xenomorph-design.jpg/revision/latest?cb=20200302150206",
         path: "agents\\models\\hmn_ag2\\zombie\\xenomorph\\xenomorph.vmdl"
       },
       {
         id: "witch_headcrab",
         name: "Witch Headcrab",
         category: "Zombies / L4D",
-        image: "https://pngimg.com/uploads/monster/monster_PNG24.png",
+        image: "https://images.steamusercontent.com/ugc/2486623401413535357/72DCBE5686E51C74591FA5E75E557E32219BFE0B/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
         path: "agents\\models\\hmn_ag2\\zombie\\witch_headcrab\\witch_headcrab.vmdl"
       },
       {
         id: "skeleton",
         name: "Skeleton",
         category: "Zombies",
-        image: "https://pngimg.com/uploads/skeleton/skeleton_PNG5558.png",
+        image: "https://as2.ftcdn.net/v2/jpg/00/67/91/25/1000_F_67912559_EtGFNC9vHL3dLpwbEB4FQMbZ3k58uy9z.jpg",
         path: "agents\\models\\hmn_ag2\\zombie\\skeleton\\skeleton.vmdl"
       }
     ];
